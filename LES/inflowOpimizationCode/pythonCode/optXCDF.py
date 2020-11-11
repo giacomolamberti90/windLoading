@@ -77,14 +77,6 @@ sol = SolutionDirectory(os.path.join(test0, 'postProcessing/probes/'))
 timeStep = []
 for t in sol:
 	timeStep.append(t.baseName()); 
-						
-# Reynolds' stresses at building location
-uu_b[:,0] = numpy.loadtxt(os.path.join(test0, 
-           'postProcessing/sampleDict/'+timeStep[-1],'line_UPrime2Mean.xy'))[:,1]
-vv_b[:,0] = numpy.loadtxt(os.path.join(test0, 
-           'postProcessing/sampleDict/'+timeStep[-1],'line_UPrime2Mean.xy'))[:,4]
-ww_b[:,0] = numpy.loadtxt(os.path.join(test0, 
-           'postProcessing/sampleDict/'+timeStep[-1],'line_UPrime2Mean.xy'))[:,6]
 
 # Reynolds stresses at building location
 # remove parentheses from file
@@ -245,71 +237,3 @@ inflowProp = ParsedParameterFile(os.path.join(test2, "constant/inflowProperties"
 inflowProp["lagT_v"] = float(Tv_0[it+1])
 inflowProp["lagT_w"] = float(Tw_0[it+1])
 inflowProp.writeFile()
-
-#%% OPTIMIZATION LOOP
-it = it + 1 
-
-while (( (numpy.any(uu_b[:,it-1] < uu_exp_min) or 
-          numpy.any(uu_b[:,it-1] > uu_exp_min) ) or
-
-         (numpy.any(vv_b[:,it-1] < vv_exp_min) or 
-          numpy.any(vv_b[:,it-1] > vv_exp_min) ) or
-		  
-		  
-         (numpy.any(ww_b[:,it-1] < ww_exp_min) or 
-          numpy.any(ww_b[:,it-1] > ww_exp_min) )) and
-		  
-          it < it_max):
-
-	# test --------------------------------------------------------------------
-	# case directory
-	case = "/home/giacomol/Desktop/Research/windLoading/LES/optimization/highRiseDomain/XCDF"+str(it)
-	os.chdir(case)
-	
-	# Reynolds' stresses at building location
-	[uu_b[:,it], vv_b[:,it], ww_b[:,it], Tu_b_mean[it], Tv_b_mean[it], Tw_b_mean[it]] = runOpenFOAM(case, Nproc, solver)
-	
-	# GRADIENT-BASED OPTIMIZATION ---------------------------------------------
-	#uu_P = singleObjGrad(uu_b, uu_exp, uu_P, index_sample, relax_u, it)
-	#vv_P = singleObjGrad(vv_b, vv_exp, vv_P, index_sample, relax_v, it)
-	#ww_P = singleObjGrad(ww_b, ww_exp, ww_P, index_sample, relax_w, it)
-	[vv_P, ww_P] = multiObjGrad_Rij(uu_b, uu_exp, vv_b, vv_exp, ww_b, ww_exp, vv_P, ww_P, index_probes, it)
-	[Tv_0, Tw_0] = multiObjGrad_Ti(Tu_b_mean, 0.1482, Tv_b_mean, 0.0337, Tw_b_mean, 0.0469, Tv_0, Tw_0, it)
-                      
-	# PREPARE NEXT STEP -------------------------------------------------------
-	# Create next step dir
-	os.mkdir(os.path.join(case,'../XCDF' + str(it+1)))
-	
-	# Copy 0/constant/system directories
-	shutil.copytree(os.path.join(test0,'0'), 
-	                    os.path.join(case,'../XCDF' + str(it+1), '0'))
-	shutil.copytree(os.path.join(test0,'constant'), 
-	                    os.path.join(case,'../XCDF' + str(it+1), 'constant'))
-	shutil.copytree(os.path.join(test0,'system'), 
-	                    os.path.join(case,'../XCDF' + str(it+1), 'system'))
-	
-	# Bezier curves
-	[uu_0, zuu_0] = bezier(uu_P[:,:,it+1], Nsample)
-	[vv_0, zvv_0] = bezier(vv_P[:,:,it+1], Nsample)
-	[ww_0, zww_0] = bezier(ww_P[:,:,it+1], Nsample)
-	
-	# Write input for new case    
-	#uuBarInlet = numpy.array([zuu_0, uu_0]).T 
-	vvBarInlet = numpy.array([zvv_0, vv_0]).T 
-	wwBarInlet = numpy.array([zww_0, ww_0]).T
-					 
-	#numpy.savetxt(os.path.join(case,'../XCDF' + str(it+1), 
-	#    'constant/uuBarInlet'), uuBarInlet, header='(', footer=')', comments='')
-	numpy.savetxt(os.path.join(case,'../XCDF' + str(it+1), 
-	    'constant/vvBarInlet'), vvBarInlet, header='(', footer=')', comments='')
-	numpy.savetxt(os.path.join(case,'../XCDF' + str(it+1), 
-	    'constant/wwBarInlet'), wwBarInlet, header='(', footer=')', comments='')
-	
-	inflowProp = ParsedParameterFile(os.path.join(case, "constant/inflowProperties"))
-	#inflowProp["lagT_u"] = float(Tu_0[it])
-	inflowProp["lagT_v"] = float(Tv_0[it+1])
-	inflowProp["lagT_w"] = float(Tw_0[it+1])
-	inflowProp.writeFile()
-	
-	# Update
-	it = it + 1
