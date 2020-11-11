@@ -10,3 +10,5 @@ The OpenFOAM case contains the following folders:
       - **vvBarInlet**: vertical Reynolds stress profile (y needs to be vertical direction for inflow solver!)
       - **wwBarInlet**: spanwise Reynolds stress profile
       - **uvBarInlet**: shear stress profile
+  - **system**: contains the standard OpenFOAM files
+     
