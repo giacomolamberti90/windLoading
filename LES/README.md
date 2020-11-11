@@ -1,3 +1,6 @@
+The folder contains:
+ - **LambertiEtal_inflowOptimization.pdf**: [1]
+ - **LambertiGorle_LESSensitivity.pdf**: [2]
  - **empyDomain**: data relative to [1]
  - **highRiseBuilding**: data relative to [2]
  - **inflowOptimizationCode**: contains OpenFOAM and python code to optimize inflow conditions for LES
