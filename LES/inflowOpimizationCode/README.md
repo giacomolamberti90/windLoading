@@ -1,1 +1,2 @@
-
+  - **OpenFOAMCode**: contains the OpenFOAM code to generate divergence-free turbulent flow field for LES; the original code was provide by Xie-Castro and was adapted to divergence-free version
+  - **pythonCode**: contains the python code necessary to optimize the inflow profile in order to obtain desired statistics at the location of interest
