@@ -3,10 +3,9 @@ This directory contains the python code to perform gradient-based optimization o
   - **optXCDF.py**: main file used to perform the inflow optimization; the file first initializes the quantities of interest (i.e. Reynolds stresses and time-scales at inflow plane and building locations), then read the results of the two initial simulations (test0, test1) and finally runs the optimization to produce the input files for test2. The code automatically generates the dictionaries necessary to run the OpenFOAM simulations.
   - **multiObjGrad.py**:
   - **singleObjGrad.py**:
-  - **runOpenFOAM.py**:
-  - **inputData.py**: 
-  - **bezier.py**:
-  - **sampleDict.py**:
+  - **runOpenFOAM.py**: (optional) automatically run OpenFOAM with the new files and check for simulation convergence; the function should be called from optXCDF.py.
+  - **inputData.py**: defines input data, i.e. experimental values, Bezier points, hyper-parameters of optimization, folder paths, etc.
+  - **bezier.py**: function that generates Bezier curve
   - **timeScale.py**:
   - **postProcessing.py**:
   - **exp**:
