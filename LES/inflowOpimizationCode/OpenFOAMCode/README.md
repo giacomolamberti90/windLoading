@@ -1,7 +1,7 @@
 ## Inflow condition
 This folder contains the OpenFOAM code that generates inflow conditions for LES (see [1,2] for more details):
   - **XCDF.C**: standard pisoFoam solver
-  - **Ugen.H**: digital filter procedure
+  - **Ugen.H**: generate random turbulent flow field with desired statistics
   - **pEqn.H**: introduces the turbulent flow field in a plane inside the domain next to the inlet boundary, then solve the standard Poisson equation
   - **UEqn.H**: standard momentum equation
   - **inflowProperties.H**: define inflow properties to be read from OpenFOAM dictionary 
