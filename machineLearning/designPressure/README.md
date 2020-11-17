@@ -1,3 +1,11 @@
-This directory contains some preliminary work on computer vision to estimate the design pressure of glazed panels:
+This directory contains some preliminary work on computer vision to estimate the design pressure of glazed panels, given wind tunnel and RANS data:
   - **designPressure.pdf**: presentation collecting preliminary results
-  - **
+  - **train.py**: training of deep learning models
+  - **evaluate.py**: evaluation of deep learning models
+  - **model.py**: deep learning models
+  - **loader.py**: load data into dataframes
+  - **utils.py**: functions to perform post-processing
+  - **features.py**: load and compute features from RANS
+  - **labels.py**: load rms pressure from LES and rotate coordinates
+  - **data**: contains data
+  - **best_models**: contains the weights of the best models
