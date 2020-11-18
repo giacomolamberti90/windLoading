@@ -24,5 +24,5 @@ To run a different test case follow these steps:
   3. Update the files containing inflow profiles (*Inlet); the files should contain two columns, i.e. vertical coordinate and value of the quantity of interest
   4. Update system/topoSetDict and run topoSet
   5. Run setsToZones -noFlipMap
-  6. Run XCDF
+  6. Run myXCDF
      
