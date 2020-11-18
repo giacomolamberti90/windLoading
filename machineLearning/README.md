@@ -1,6 +1,6 @@
 ## Multi-fidelity machine learning
 This directory contains the work on machine learning to leverage low and high-fidelity data:
-  - **activeSubspaces**: preliminary data analysis using active subspaces and PCA 
+  - **activeSubspaces**: preliminary data analysis using active subspaces and PCA [1]
   - **RMSpressure**: code relative to [1]
   - **designPressure**: work on predicting the design pressure of glazed panels given wind tunnel and RANS data
 
